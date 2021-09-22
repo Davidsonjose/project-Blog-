@@ -1,0 +1,31 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "a simple project on express and nodejs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owujib/node2103.git"
+  },
+  "keywords": [
+    "server",
+    "express",
+    "nodejs",
+    "ejs",
+    "html",
+    "javascript",
+    "api"
+  ],
+  "author": "davidson",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.4",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  }
+}
