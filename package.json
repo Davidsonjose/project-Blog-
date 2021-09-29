@@ -1,12 +1,12 @@
 {
   "name": "project",
   "version": "1.0.0",
-  "description": "a simple project on express and nodejs",
+  "description": "a simple project for nodejs and express  ",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -21,11 +21,21 @@
     "javascript",
     "api"
   ],
-  "author": "davidson",
+  "author": "owujib",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/owujib/node2103/issues"
+  },
+  "homepage": "https://github.com/owujib/node2103#readme",
   "dependencies": {
-    "axios": "^0.21.4",
+    "cloudinary": "^1.26.3",
     "ejs": "^3.1.6",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^6.0.8",
+    "multer": "^1.4.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }

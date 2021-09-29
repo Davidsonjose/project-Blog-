@@ -2,9 +2,14 @@
 
 const express = require('express'); //import express
 const path = require('path');
-
+const mongoose = require('mongoose');
 const postRoutes =require('./routes/post.routes');
 const homeRoutes = require('./routes/home.routes');
+
+
+
+
+
 
 //initialize our app
 const app = express();
@@ -20,12 +25,13 @@ app.set('views', path.join(__dirname, 'views'));
 
 //static route middleware
 app.use(express.static(path.join(__dirname, 'public'))); //static css/img/js
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 
 
 //routes middleware
 app.use('/', homeRoutes);
+app.use('/post', postRoutes );  
 
 
 
@@ -34,6 +40,26 @@ app.get('/api/names', (req, res, next) => {
   res.status(200).json({
     names: ['Ejike', 'Chinedu', 'Smart'],
   });
+});
+
+
+app.all('*', (req, res, next)=>{
+  res.render('404.ejs', {
+    title: 'Error: 404',
+    data: 'Ooooops page not found',
+  })
+});
+
+
+
+mongoose.connect('mongodb://localhost:27017/media',{
+  useNewUrlParser: true,
+})
+.then(()=>{
+  console.log('database is connected');
+})
+.catch(()=>{
+  console.log(err);
 });
 
 
