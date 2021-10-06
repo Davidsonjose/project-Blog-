@@ -33,11 +33,16 @@ const upload = multer({
   fileFilter: (req, file, callback) => {
     let fileType = ['image/jpeg', 'image/png'];
     if (!fileType.includes(file.mimetype)) {
-      return callback(
-        new Error('file type not supported upload png, jpeg or jpg'),
-        false
-      );
+       return callback(new Error('filetype not supported upload jpeg or png '),
+       false
+       );
     }
+    // if (!fileType.includes(file.mimetype)) {
+    //   return callback(
+    //     new Error('file type not supported upload png, jpeg or jpg'),
+    //     false
+    //   );
+    // }
 
     return callback(null, true);
   },
@@ -48,15 +53,29 @@ const router = express.Router();
 //RETRIEVE
 router.get('/', async (req, res, next) => {
   try {
-    let posts = await Post.find();
+    const posts = await Post.find();
     res.render('posts/list.ejs', {
       title: 'Posts',
       posts,
+      server_url: req.server_url, 
     });
   } catch (error) {
     next(error);
   }
 });
+router.get('/:id', async(req, res, next)=>{
+   try {
+     let { id } =req.params;
+     const post= await Post.findById({ _id: id });
+     res.render('posts/single.ejs',{
+       title: 'Posts-' + post.title,
+       post,
+       server_url: req.server_url, 
+     });
+   } catch (error) {
+     next (error);
+   }
+})
 
 // router.get('/:id', async (req, res, next) => {
 //   try {
@@ -72,32 +91,48 @@ router.get('/', async (req, res, next) => {
 //   }
 // });
 
-router.get('/create', (req, res, next) => {
+router.get('/create/post', (req, res, next) => {
   res.render('posts/create.ejs', {
     title: 'create post',
+    server_url: req.server_url, 
   });
 });
 
 //CREATE
-// router.post('/create', upload.single('image'),  (req, res, next) => {
-//   try {
-//     const { file, body } = req;
-//     res.send(req.file)
-//   } 
-//   catch (error) {
-//     next(error);
-//   }
-// });
-
-router.post('/create', (req, res, next)=>{
-    const image = upload.single('image');
-    image (req, res, (err)=>{
-        if (err) {
-            return new Error(err)
-        }
-        res.send(req.file);
-    });
+router.post('/create/post', upload.single('image'),  async(req, res, next) => {
+  try {
+    const {file, body} = req;
+    const data = {
+      image: `upload/pictures/${file?.filename}`,
+      ...body,
+    };
+    const post = await Post.create(data);
+    res.redirect(`/post/${post.id}`);
+  } catch (error) {
+     next(error);
+  }
 });
+router.delete('/delete/:id', async(req, res, next) => {
+  try {
+    const { id } = req.params;
+    const post = await Post.findByIdAndDelete({ _id: id});
+    await post.delete();
+    fs.unlinkSync(post.image);
+    res.redirect('/post')
+  } catch (error) {
+     next(error);
+  }
+});
+
+// router.post('/create', (req, res, next)=>{
+//     const image = upload.single('image');
+//     image (req, res, (err)=>{
+//         if (err) {
+//             return new Error(err)
+//         }
+//         res.send(req.file);
+//     });
+// });
 
 
 

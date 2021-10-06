@@ -5,19 +5,37 @@
 </head>
 <body>
     <%- include('../includes/nav.ejs') %>
+    
 
 
 
         <div class="container bg-light mt-3">
             <div class="row">
                 <div class="col-md-6 offset-md-6 text-right">
-                    <a href="/post/create" class="btn btn-outline-primary">New post</a>
+                    <a href="<% server_url %>/post/create/post" class="btn btn-outline-primary">New post</a>
                 </div>
             </div>
             <div>
                 <h2 class="display-4">Posts</h2>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque asperiores doloremque minima magnam accusamus assumenda, qui nam modi natus numquam quod sequi iusto. Excepturi quo natus cum dolore, nulla sed.
+                        <% posts.map(post=>{ %>
+                    <div class="w-75 mb-3 " style="background-color: #fff;"> 
+                        <div class="mt-4">
+                            <h3 class="text-grey"><%= post.title %></h3> </div> 
+                            <div>
+                                <a href="<% server_url %>post/<%= post._id%>" id="text-none" class="text-muted">
+                                </p><%=post.description?.slice(0, 30)%>...<p>
+                                </a>
+                            </div>
+                                <div>
+                                  <a href="<% server_url %>post/<%= post._id%>">
+                                    <img style="max-width: 300px;"
+                                     src=" <% server_url %> <%= post.image %>"
+                                      alt="<%= post.title %>" /></a>  
+                                </div>
+                        <div><a href="<% server_url %>post/<%= post._id%>" style="text-decoration: none;">Read more</a></div>
+                       </div>  
+                      <%  }) %>       
             </div>
         </div>
-</body>
-</html>
+</body>  
+</html>   

@@ -4,7 +4,10 @@ const express = require('express'); //import express
 const path = require('path');
 const mongoose = require('mongoose');
 const postRoutes =require('./routes/post.routes');
-const homeRoutes = require('./routes/home.routes');
+const appRoutes = require('./routes/app.routes');
+const methodOverride = require('method-override');
+
+
 
 
 
@@ -17,7 +20,7 @@ const app = express();
 //post middleware (responsible for handling post data)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(methodOverride('_method'));
 
 //templating set up
 app.set('views', 'ejs');
@@ -27,10 +30,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public'))); //static css/img/js
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
-
+//global variable
+app.use((req, res, next)=>{
+  req.server_url = 'http://localhost:5000/'   
+       return next();
+})
 
 //routes middleware
-app.use('/', homeRoutes);
+app.use('/', appRoutes);
 app.use('/post', postRoutes );  
 
 
@@ -39,6 +46,7 @@ app.use('/post', postRoutes );
 app.get('/api/names', (req, res, next) => {
   res.status(200).json({
     names: ['Ejike', 'Chinedu', 'Smart'],
+    
   });
 });
 
