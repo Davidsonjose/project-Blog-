@@ -6,7 +6,7 @@
 <body>
     <%- include('../includes/nav.ejs') %>
     
-
+    
 
 
         <div class="container bg-light mt-3">
@@ -15,7 +15,7 @@
                     <a href="<% server_url %>/post/create/post" class="btn btn-outline-primary">New post</a>
                 </div>
             </div>
-            <div>
+            <div class="posts" id="header-post">
                 <h2 class="display-4">Posts</h2>
                         <% posts.map(post=>{ %>
                     <div class="w-75 mb-3 " style="background-color: #fff;"> 
@@ -37,5 +37,21 @@
                       <%  }) %>       
             </div>
         </div>
+        <script>
+            let posts = document.querySelector('.post');
+            let postHeader = document.querySelector('#header-post');
+            console.log(navigator.onLine);
+            if (navigator.onLine !== true) {
+                let errorDiv = document.createElement('div');
+                errorDiv.innerHTML = `
+                  <div class="container">
+                        <div class="alert alert-danger">
+                            Ooops you are not connected to the internet
+                        </div>
+                    </div>
+                `;
+                posts.insertBefore(errorDiv, postHeader);
+            }
+        </script>
 </body>  
 </html>   

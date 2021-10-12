@@ -1,0 +1,5 @@
+  // const confirmPassword = await User.findOne({password: body.confirmPassword});
+        // const password = await User.findOne({password: body.password});
+        // if (password !== confirmPassword) {
+        //     return next('please retry your password again')
+        // }

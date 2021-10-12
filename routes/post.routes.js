@@ -5,7 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 // const cloudinary = require('cloudinary').v2;
-
+const postController =  require('../controller/postController');
 const Post = require('../models/Post');
 
 // cloudinary configuration
@@ -51,31 +51,8 @@ const upload = multer({
 const router = express.Router();
 
 //RETRIEVE
-router.get('/', async (req, res, next) => {
-  try {
-    const posts = await Post.find();
-    res.render('posts/list.ejs', {
-      title: 'Posts',
-      posts,
-      server_url: req.server_url, 
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-router.get('/:id', async(req, res, next)=>{
-   try {
-     let { id } =req.params;
-     const post= await Post.findById({ _id: id });
-     res.render('posts/single.ejs',{
-       title: 'Posts-' + post.title,
-       post,
-       server_url: req.server_url, 
-     });
-   } catch (error) {
-     next (error);
-   }
-})
+router.get('/', postController.getAllPost);
+router.get('/:id', postController.getSinglePost);
 
 // router.get('/:id', async (req, res, next) => {
 //   try {

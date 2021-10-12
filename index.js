@@ -4,8 +4,9 @@ const express = require('express'); //import express
 const path = require('path');
 const mongoose = require('mongoose');
 const postRoutes =require('./routes/post.routes');
-const appRoutes = require('./routes/app.routes');
-const methodOverride = require('method-override');
+const userRoutes =require('./routes/user.routes');
+// const appRoutes = require('./routes/app.routes');
+const Post = require('./models/Post');
 
 
 
@@ -20,14 +21,10 @@ const app = express();
 //post middleware (responsible for handling post data)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
 
-//templating set up
-app.set('views', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+
 
 //static route middleware
-app.use(express.static(path.join(__dirname, 'public'))); //static css/img/js
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 //global variable
@@ -37,8 +34,9 @@ app.use((req, res, next)=>{
 })
 
 //routes middleware
-app.use('/', appRoutes);
-app.use('/post', postRoutes );  
+// app.use('/', appRoutes);
+app.use('/api/post', postRoutes );
+app.use('/api/user', userRoutes );
 
 
 
@@ -49,6 +47,16 @@ app.get('/api/names', (req, res, next) => {
     
   });
 });
+
+
+// app.get('/api/title', async(req, res, next)=>{
+//   const posts= await Post.find();
+//   res.status(200).json({
+//     status: 'success',
+//     title: 'Posts-' + posts.title,
+
+//   })
+// })
 
 
 app.all('*', (req, res, next)=>{
@@ -62,11 +70,12 @@ app.all('*', (req, res, next)=>{
 
 mongoose.connect('mongodb://localhost:27017/media',{
   useNewUrlParser: true,
+  // useCreateIndex: false
 })
 .then(()=>{
   console.log('database is connected');
 })
-.catch(()=>{
+.catch((err)=>{
   console.log(err);
 });
 
