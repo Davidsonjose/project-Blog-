@@ -41,7 +41,9 @@ const userSchema = new mongoose.Schema({
 
 
       
-    }, {timestamps: true});
+    }, {timestamps: true, toJSON: { virtuals: true},
+        toObject: {virtuals: true},
+});
     userSchema.pre('save', async function (next) {
         this.password= await bcryptjs.hash(this.password, 10);
         return next();

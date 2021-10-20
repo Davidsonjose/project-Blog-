@@ -11,11 +11,11 @@ exports.register = async (req, res, next) => {
     const { body } = req;
     const emailExist = await User.findOne({ email: body.email });
     if (emailExist) {
-      return next(new ApiError(`${body.email} is taken`));
+      return next(new Error(`${body.email} is taken`));
     }
     const usernameExist = await User.findOne({ username: body.username });
     if (usernameExist) {
-      return next(new ApiError('username is taken'));
+      return next(new Error('username is taken'));
     }
     const user = new User({
       username: body.username,
@@ -33,7 +33,7 @@ exports.register = async (req, res, next) => {
       data: user,
     });
   } catch (error) {
-    next (new ApiError(error));
+    next (new Error(error));
   }
 };
 
@@ -43,7 +43,7 @@ exports.login = async (req, res, next) => {
     const { body } = req;
     const user= await User.findOne({email: body.email});
     if (!user) {
-      return next(new ApiError(`${body.email} does not exist`, 404));
+      return next(new Error(`${body.email} does not exist`, 404));
     }
     const username = await User.findOne({username: body.username});
     const comparePassword = await user.comparePassword(
@@ -52,7 +52,7 @@ exports.login = async (req, res, next) => {
       );
       
       if (!comparePassword || !username) {
-          return next(new ApiError("incorrect username or password", 404));
+          return next(new Error("incorrect username or password", 404));
         }
         
         //  user.password = undefined;
@@ -65,7 +65,7 @@ exports.login = async (req, res, next) => {
       token,
     });
   } catch (error) {
-      return next (new ApiError(error));
+    next (new Error(error));
   }
 };
 
@@ -93,7 +93,7 @@ exports.authorization = async(req, res, next)=>{
             })
 
         } catch (error) {
-           next (new ApiError(error));
+           next (new Error(error));
         } 
 }
 

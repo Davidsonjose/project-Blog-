@@ -3,7 +3,7 @@ const PostSchema = new mongoose.Schema({
     title: {
         type: String,
          required: [true, 'please include the title'],
-        
+         trim: true,
     },
     image: {
         type: String,
@@ -15,8 +15,14 @@ const PostSchema = new mongoose.Schema({
          required: [true, 'please include a description'],
         trim: true,
     },
+    user:{
+        type: mongoose.Schema.objectId, 
+        ref: 'User',
+        required: [true, 'a post must belong to a user'],
+    },
 },
-{ timestamps: true }
+{ timestamps: true, toJSON: { virtuals: true},
+toObject: {virtuals: true},}
 );
 
 const Post = mongoose.model('post', PostSchema);
