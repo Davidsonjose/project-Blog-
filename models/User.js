@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const UserSchema = new mongoose.Schema({
+const bcryptjs = require('bcryptjs')
+const userSchema = new mongoose.Schema({
     firstname:{
         type: String,
         trim:  true,
@@ -39,9 +40,28 @@ const UserSchema = new mongoose.Schema({
       passwordChangedAt: Date,
 
 
+      
+    }, {timestamps: true});
+    userSchema.pre('save', async function (next) {
+        this.password= await bcryptjs.hash(this.password, 10);
+        return next();
+    })
+ /**
+  * 
+  * @param {string} inputPassword: req.body password
+  * @param {string} userPassword: user instance password
+  * @returns {boolean}: true if password is correct, false if not 
+  */
 
-}, {timestamps: true});
+userSchema.methods.comparePassword = async function (
+    inputPassword, 
+    userPassword
+    ) {
+    return bcryptjs.compare(inputPassword, userPassword);
+}
+//pre save middleware
 
-const User = mongoose.model('user', UserSchema);
+const User = mongoose.model('User', userSchema);
+
 
 module.exports = User;

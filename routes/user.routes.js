@@ -1,13 +1,16 @@
 const router = require('express').Router();
 
-const authController = require('../controller/authController');
+const {authorization, login, register} = require('../controller/authController');
+const{getUserProfile} = require('../controller/UserController');
 
 
+router.post('/login', login);
+router.post('/register', register);
+router.get('/profile', getUserProfile);
 
-router.post('/login', authController.login);
-router.post('/register', authController.register);
-
-
+router.use(authorization);  
+// router.get('/profile', getUserProfile);
+// router.get('/profile', getUserProfile);
 
 
 

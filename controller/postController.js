@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+const { default: ApiError } = require('../utils/errorHandler');
 
 
 
@@ -10,7 +11,7 @@ exports.getAllPost= async (req, res, next) => {
         data: posts,
       });
     } catch (error) {
-      next(error);
+     return next (ApiError(error));
     }
   }
 
@@ -23,7 +24,7 @@ exports.getAllPost= async (req, res, next) => {
                 post,
             })
         } catch (error) {
-            
+            return next (ApiError(error))
         }
   }
 

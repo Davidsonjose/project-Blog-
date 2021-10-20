@@ -6,7 +6,9 @@ const path = require('path');
 const fs = require('fs');
 // const cloudinary = require('cloudinary').v2;
 const postController =  require('../controller/postController');
+const authController =  require('../controller/authController');
 const Post = require('../models/Post');
+const ApiError = require('../utils/errorHandler');
 
 // cloudinary configuration
 // cloudinary.config({
@@ -33,7 +35,7 @@ const upload = multer({
   fileFilter: (req, file, callback) => {
     let fileType = ['image/jpeg', 'image/png'];
     if (!fileType.includes(file.mimetype)) {
-       return callback(new Error('filetype not supported upload jpeg or png '),
+       return callback(new ApiError('filetype not supported upload jpeg or png '),
        false
        );
     }
@@ -51,7 +53,7 @@ const upload = multer({
 const router = express.Router();
 
 //RETRIEVE
-router.get('/', postController.getAllPost);
+router.get('/',authController.authorization, postController.getAllPost);
 router.get('/:id', postController.getSinglePost);
 
 // router.get('/:id', async (req, res, next) => {
@@ -86,7 +88,7 @@ router.post('/create/post', upload.single('image'),  async(req, res, next) => {
     const post = await Post.create(data);
     res.redirect(`/post/${post.id}`);
   } catch (error) {
-     next(error);
+     next (new ApiError(error));
   }
 });
 router.delete('/delete/:id', async(req, res, next) => {
@@ -97,7 +99,7 @@ router.delete('/delete/:id', async(req, res, next) => {
     fs.unlinkSync(post.image);
     res.redirect('/post')
   } catch (error) {
-     next(error);
+     next (new ApiError(error));
   }
 });
 

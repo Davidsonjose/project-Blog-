@@ -58,12 +58,21 @@ app.get('/api/names', (req, res, next) => {
 //   })
 // })
 
+//global error handler 
+app.use((err, req, res, next)=>{
+    err.statusCode= err.statusCode || 500
+    err.status = err.status || 'error';
+    res.status(err.statusCode).json({
+        status: err.status,
+        error: err,
+        data: err.message,
+        stack: err.stack,
+    })
+})
+
 
 app.all('*', (req, res, next)=>{
-  res.render('404.ejs', {
-    title: 'Error: 404',
-    data: 'Ooooops page not found',
-  })
+       return next(new Error('app route not found'))
 });
 
 
