@@ -102,29 +102,3 @@ exports.authorization = async(req, res, next)=>{
 
 
 
-
-
-
-
-// const username = await  User.findOne({username: body.username});
-//  const email = await User.findOne({email: body.email});
-// if ( !comparePassword) {
-//     return next(new Error('incorrect username or password'));
-// }
-//  if (!email) {
-//      return next(new Error(`${body.email} does not exist`))
-//  }
-
-// const User = require('../models/User');
-
-// exports.register= (req, res, next)=>{
-//     res.status(201).json({
-//         status: 'success',
-//     })
-// }
-
-// exports.login = (req, res, next)=>{
-//     res.status(201).json({
-//         status: 'success',
-//     })
-// }

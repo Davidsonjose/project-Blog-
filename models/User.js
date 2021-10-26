@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs')
+
 const userSchema = new mongoose.Schema({
     firstname:{
         type: String,
@@ -31,6 +32,7 @@ const userSchema = new mongoose.Schema({
           enum: ['user', 'admin'],
           default: 'user',
       }, 
+      profile_img: String,
       password:{
           type: String,
           required:[true, 'please input your password'],
@@ -41,8 +43,9 @@ const userSchema = new mongoose.Schema({
 
 
       
-    }, {timestamps: true, toJSON: { virtuals: true},
-        toObject: {virtuals: true},
+    }, {timestamps: true,
+    toJSON: { virtuals: true},
+    toObject: { virtuals: true },
 });
     userSchema.pre('save', async function (next) {
         this.password= await bcryptjs.hash(this.password, 10);
