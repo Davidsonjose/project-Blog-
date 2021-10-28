@@ -7,6 +7,7 @@ const fs = require('fs');
 // const cloudinary = require('cloudinary').v2;
 const postController =  require('../controller/postController');
 const Post = require('../models/Post');
+// const upload = require('../utils/upload')
 const {authorization} = require('../controller/authController')
 
 
@@ -20,6 +21,7 @@ router.get('/', postController.getAllPost);
 // router.get('/:id', postController.getSinglePost);
 router.use(authorization);
 router.post('/new/post', postController.createPosts)
+router.get('/all/user-post/:id', postController.getAllUserPost);
 
 
 
